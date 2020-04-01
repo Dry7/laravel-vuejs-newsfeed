@@ -30,13 +30,7 @@
     </v-app-bar>
 
     <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <v-col class="text-center">
-
-          </v-col>
-        </v-row>
-      </v-container>
+      <Feed></Feed>
     </v-content>
     <v-footer color="indigo" app>
       <span class="white--text">&copy; 2020</span>
@@ -48,9 +42,13 @@
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
 import { LOAD_CATEGORIES } from '@/store/actions';
+import Feed from '@/components/Feed.vue';
 
 export default Vue.extend({
   name: 'HelloWorld' as string,
+  components: {
+    Feed,
+  },
 
   mounted(): void {
     this.$store.dispatch(LOAD_CATEGORIES);
@@ -66,20 +64,6 @@ export default Vue.extend({
 
   data: () => ({
     drawer: null,
-    whatsNext: [
-      {
-        text: 'Explore components',
-        href: 'https://vuetifyjs.com/components/api-explorer',
-      },
-      {
-        text: 'Select a layout',
-        href: 'https://vuetifyjs.com/layout/pre-defined',
-      },
-      {
-        text: 'Frequently Asked Questions',
-        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-      },
-    ],
   }),
 });
 </script>
