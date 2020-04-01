@@ -7,6 +7,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Class Category
+ *
+ * @package App\Models
+ *
+ * @property int $id
+ * @property string $name
+ *
+ * @property-read Feed[] $feeds
+ */
 class Category extends Model
 {
     /**

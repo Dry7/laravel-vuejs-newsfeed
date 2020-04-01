@@ -7,7 +7,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
+/**
+ * Class Feed
+ *
+ * @package App\Models
+ *
+ * @property int $id
+ * @property string $title
+ * @property string $slug
+ * @property object $content
+ *
+ * @property-read Category[]|Collection $categories
+ * @property-read Media[]|Collection $media
+ */
 class Feed extends Model
 {
     protected $table = 'feed';
