@@ -5,6 +5,8 @@ declare(strict_types=1);
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+/** @var \Illuminate\Routing\Router $router */
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,3 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+$router->post('search', 'Api\Search');
+$router->post('categories', 'Api\Categories');

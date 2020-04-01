@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Views;
+namespace App\Http\Views\Feed;
 
+use App\Http\Views\MediaView;
 use App\Models\Category;
 use App\Models\Feed;
 use App\Models\Media;

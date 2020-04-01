@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Views;
+namespace App\Http\Views\Feed;
 
 use App\Models\Feed;
 use Illuminate\Database\Eloquent\Collection;
