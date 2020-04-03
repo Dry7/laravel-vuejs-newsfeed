@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Views\Categories;
 
+use App\Http\Results\ItemsResult;
 use App\Models\Category;
-use App\Models\Feed;
-use Illuminate\Database\Eloquent\Collection;
 
 class CategoryListView implements \JsonSerializable
 {
-    private Collection $items;
+    private ItemsResult $result;
 
-    public function __construct(Collection $items)
+    public function __construct(ItemsResult $result)
     {
-        $this->items = $items;
+        $this->result = $result;
     }
 
     public function jsonSerialize(): array
     {
-        return $this->items->map(static fn (Category $category) => new CategoryView($category))->toArray();
+        return [
+            'items' => $this->result->getItems()->map(static fn (Category $category) => new CategoryView($category))->toArray(),
+            'total' => $this->result->getTotal(),
+        ];
     }
 }

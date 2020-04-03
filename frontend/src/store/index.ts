@@ -34,9 +34,10 @@ export default new Vuex.Store<State>({
         .pipe(
           switchMap((response: Response) => response.json()),
         )
-        .subscribe((categories) => {
-          commit('setCategories', { categories });
-        });
+        .subscribe(
+          (response) => commit('setCategories', { categories: response.items }),
+          () => commit('loadingError'),
+        );
     },
     [actions.LOAD_FEED]: ({ commit, state }, { append = false } = {}) => {
       if (append && state.navigation.offset >= state.total) {
@@ -59,7 +60,7 @@ export default new Vuex.Store<State>({
       commit('setNavigation', { category, query: null, offset: 0 });
     },
     [actions.SET_QUERY]: ({ commit, state }, query: string) => {
-      commit('setQuery', { query: '' });
+      commit('setQuery', { query });
       commit('setOffset', { offset: 0 });
     },
     [actions.SEARCH_FEED]: ({ commit, dispatch }) => {

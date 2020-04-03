@@ -6,7 +6,7 @@ namespace App\Http\Results;
 
 use Illuminate\Database\Eloquent\Collection;
 
-class SearchResult
+class ItemsResult
 {
     private Collection $items;
     private int $total;

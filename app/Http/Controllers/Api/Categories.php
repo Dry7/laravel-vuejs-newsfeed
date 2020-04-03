@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Views\Categories\CategoryListView;
-use App\Models\Category;
+use App\Repositories\CategoryRepository;
 
 class Categories
 {
-    public function __invoke()
+    public function __invoke(CategoryRepository $repository)
     {
-        return new CategoryListView(Category::where('id', '>', 1)->orderBy('name')->get());
+        return new CategoryListView($repository->all());
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Repositories\CategoryRepository;
 use App\Repositories\FeedRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(CategoryRepository::class);
         $this->app->singleton(FeedRepository::class);
     }
 

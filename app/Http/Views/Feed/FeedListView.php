@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Views\Feed;
 
-use App\Http\Results\SearchResult;
+use App\Http\Results\ItemsResult;
 use App\Models\Feed;
-use Illuminate\Database\Eloquent\Collection;
 
 class FeedListView implements \JsonSerializable
 {
-    private SearchResult $result;
+    private ItemsResult $result;
 
-    public function __construct(SearchResult $result)
+    public function __construct(ItemsResult $result)
     {
         $this->result = $result;
     }

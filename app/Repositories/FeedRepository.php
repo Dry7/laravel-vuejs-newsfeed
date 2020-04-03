@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Http\Requests\SearchRequest;
-use App\Http\Results\SearchResult;
+use App\Http\Results\ItemsResult;
 use App\Models\Feed;
 use Illuminate\Database\Eloquent\Builder;
 
 class FeedRepository
 {
-    public function search(SearchRequest $request): SearchResult
+    public function search(SearchRequest $request): ItemsResult
     {
         $items = Feed::query()
             ->selectRaw('feed.*, count(*) OVER () as total')
@@ -31,7 +31,7 @@ class FeedRepository
             ->limit($request->getLimit())
             ->get();
 
-        return new SearchResult($items, $items->first()->total ?? 0);
+        return new ItemsResult($items, $items->first()->total ?? 0);
     }
 
     protected function escapeLike(string $query): string
