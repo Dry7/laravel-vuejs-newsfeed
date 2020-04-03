@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * Class Category
@@ -27,9 +26,4 @@ class Category extends Model
     protected $fillable = [
         'name',
     ];
-
-    public function feeds(): BelongsToMany
-    {
-        return $this->belongsToMany(Feed::class, 'feed_categories');
-    }
 }

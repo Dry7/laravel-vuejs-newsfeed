@@ -26,12 +26,4 @@ class ItemsResult
     {
         return $this->total;
     }
-
-    public function toArray(): array
-    {
-        return [
-            'items' => $this->items,
-            'total' => $this->total,
-        ];
-    }
 }

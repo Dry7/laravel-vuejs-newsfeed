@@ -5,6 +5,7 @@ declare(strict_types=1);
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Models\Category;
+use App\Models\Feed;
 use App\User;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -33,5 +34,15 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->define(Category::class, function (Faker $faker) {
     return [
         'name' => $faker->title,
+    ];
+});
+
+$factory->define(Feed::class, function (Faker $faker) {
+    return [
+        'title' => $faker->title,
+        'slug' => $faker->slug,
+        'content' => [
+            ['type' => 'html', 'content' => $faker->randomHtml(), 'attributes' => null]
+        ],
     ];
 });

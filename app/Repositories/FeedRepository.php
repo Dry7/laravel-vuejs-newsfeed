@@ -25,13 +25,13 @@ class FeedRepository
             ->when(
                 !empty($request->getQuery()),
                 fn (Builder $query) => $query
-                    ->where('title',  'ilike',  '%' . $this->escapeLike($request->getQuery()) . '%')
+                    ->where('feed.title',  '~*',  $this->escapeLike($request->getQuery()))
             )
             ->offset($request->getOffset())
             ->limit($request->getLimit())
             ->get();
 
-        return new ItemsResult($items, $items->first()->total ?? 0);
+        return new ItemsResult($items, (int)($items->first()->total ?? 0));
     }
 
     protected function escapeLike(string $query): string
