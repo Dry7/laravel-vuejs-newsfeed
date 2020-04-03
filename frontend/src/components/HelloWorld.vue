@@ -35,7 +35,7 @@
 
     <v-content class="align-items-center justify-center">
       <v-text-field v-model="query" v-debounce:300="setQuery" class="search__query" />
-      <Feed />
+      <Feed  @load-more="loadMore" />
     </v-content>
     <v-footer color="indigo" app>
       <span class="white--text">&copy; 2020</span>
@@ -53,12 +53,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapGetters } from 'vuex';
-import {
-  LOAD_CATEGORIES,
-  SEARCH_FEED,
-  SET_CATEGORY,
-  SET_QUERY,
-} from '@/store/actions';
+import * as actions from '@/store/actions';
 import Feed from '@/components/Feed.vue';
 import { Category } from '@/types';
 
@@ -69,7 +64,7 @@ export default Vue.extend({
   },
 
   mounted(): void {
-    this.$store.dispatch(LOAD_CATEGORIES);
+    this.$store.dispatch(actions.LOAD_CATEGORIES);
   },
 
   props: {
@@ -77,7 +72,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...mapGetters(['categories', 'category']),
+    ...mapGetters(['categories', 'category', 'loading']),
   },
 
   methods: {
@@ -85,17 +80,28 @@ export default Vue.extend({
       this.setCategory(null);
     },
     setCategory(category: Category | null) {
+      this.scrollToTop();
       this.query = null;
       this.$store
-        .dispatch(SET_CATEGORY, category ? category.id : null)
-        .then(() => this.$store.dispatch(SET_QUERY, ''))
-        .then(() => this.$store.dispatch(SEARCH_FEED))
+        .dispatch(
+          actions.SET_CATEGORY,
+          category && category.id !== this.category ? category.id : null,
+        )
+        .then(() => this.$store.dispatch(actions.LOAD_FEED))
         .then(() => { this.drawer = false; });
     },
     setQuery(query: string) {
       this.$store
-        .dispatch(SET_QUERY, query)
-        .then(() => this.$store.dispatch(SEARCH_FEED));
+        .dispatch(actions.SET_QUERY, query)
+        .then(() => this.$store.dispatch(actions.LOAD_FEED));
+    },
+    loadMore() {
+      if (!this.loading) {
+        this.$store.dispatch(actions.NEXT_PAGE);
+      }
+    },
+    scrollToTop() {
+      window.scrollTo(0, 0);
     },
   },
 

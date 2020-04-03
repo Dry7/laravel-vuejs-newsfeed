@@ -7,6 +7,7 @@
             :items="feed"
             :min-item-size="264"
             page-mode
+            v-infinite-scroll="loadMore"
           >
             <template v-slot="{ item, index, active }">
               <DynamicScrollerItem
@@ -55,7 +56,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { SEARCH_FEED } from '@/store/actions';
+import { LOAD_FEED, SEARCH_FEED } from '@/store/actions';
 import { mapGetters } from 'vuex';
 import { Feed } from '@/types';
 
@@ -63,12 +64,15 @@ export default Vue.extend({
   name: 'Feed' as string,
 
   mounted(): void {
-    this.$store.dispatch(SEARCH_FEED);
+    this.$store.dispatch(LOAD_FEED);
   },
 
   methods: {
     image(item: Feed) {
       return item.media.length > 0 ? item.media[0].media.attributes.url : this.placeholder;
+    },
+    loadMore() {
+      this.$emit('load-more');
     },
   },
 

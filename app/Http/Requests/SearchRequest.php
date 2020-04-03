@@ -6,6 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SearchRequest extends FormRequest
 {
+    private const DEFAULT_LIMIT = 10;
+
     public function authorize(): bool
     {
         return true;
@@ -14,8 +16,10 @@ class SearchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category' => 'integer',
-            'query' => 'string',
+            'category' => 'nullable|integer',
+            'query' => 'nullable|string',
+            'offset' => 'nullable|integer',
+            'limit' => 'nullable|integer',
         ];
     }
 
@@ -27,5 +31,15 @@ class SearchRequest extends FormRequest
     public function getQuery(): ?string
     {
         return $this->input('query');
+    }
+
+    public function getOffset(): int
+    {
+        return (int)$this->input('offset');
+    }
+
+    public function getLimit(): int
+    {
+        return (int)$this->input('limit', self::DEFAULT_LIMIT);
     }
 }

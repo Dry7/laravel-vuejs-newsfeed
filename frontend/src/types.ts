@@ -40,8 +40,13 @@ export interface Feed {
 }
 
 export interface State {
+  navigation: {
+    offset: number;
+    category: number | null;
+    query: string | null;
+  };
+  total: number;
+  loading: boolean;
   categories: Category[];
-  category: number | null;
-  query: string | null;
   feed: Feed[];
 }

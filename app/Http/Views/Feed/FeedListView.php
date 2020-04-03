@@ -4,20 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Views\Feed;
 
+use App\Http\Results\SearchResult;
 use App\Models\Feed;
 use Illuminate\Database\Eloquent\Collection;
 
 class FeedListView implements \JsonSerializable
 {
-    private Collection $items;
+    private SearchResult $result;
 
-    public function __construct(Collection $items)
+    public function __construct(SearchResult $result)
     {
-        $this->items = $items;
+        $this->result = $result;
     }
 
     public function jsonSerialize(): array
     {
-        return $this->items->map(static fn (Feed $feed) => new FeedView($feed))->toArray();
+        return [
+            'items' => $this->result->getItems()->map(static fn (Feed $feed) => new FeedView($feed))->toArray(),
+            'total' => $this->result->getTotal(),
+        ];
     }
 }

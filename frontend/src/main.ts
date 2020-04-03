@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VueRx from 'vue-rx';
 import vueDebounce from 'vue-debounce';
 import VueVirtualScroller from 'vue-virtual-scroller';
+import infiniteScroll from 'vue-infinite-scroll';
+
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -14,6 +16,7 @@ Vue.config.productionTip = false;
 Vue.use(VueRx);
 Vue.use(vueDebounce);
 Vue.use(VueVirtualScroller);
+Vue.use(infiniteScroll);
 
 new Vue({
   router,

@@ -17,3 +17,5 @@ declare module "vue-virtual-scroller" {
 
   export default plugin;
 }
+
+declare module "vue-infinite-scroll";

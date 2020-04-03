@@ -10,16 +10,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store<State>({
   state: {
+    navigation: {
+      offset: 0,
+      category: null,
+      query: null,
+    },
+    total: 0,
+    loading: false,
     categories: [],
-    category: null,
-    query: null,
     feed: [],
   },
   getters: {
     categories: (state) => state.categories,
-    category: (state) => state.category,
-    query: (state) => state.query,
+    category: (state) => state.navigation.category,
+    query: (state) => state.navigation.query,
     feed: (state) => state.feed,
+    loading: (state) => state.loading,
+    total: (state) => state.total,
   },
   actions: {
     [actions.LOAD_CATEGORIES]: ({ commit }) => {
@@ -31,27 +38,59 @@ export default new Vuex.Store<State>({
           commit('setCategories', { categories });
         });
     },
-    [actions.SEARCH_FEED]: ({ commit, state }) => {
-      (new FeedService()).all(state.category, state.query)
+    [actions.LOAD_FEED]: ({ commit, state }, { append = false } = {}) => {
+      if (append && state.navigation.offset >= state.total) {
+        return;
+      }
+
+      commit('setLoading', { loading: true });
+      (new FeedService()).all(state.navigation)
         .pipe(
           debounceTime(1000),
           switchMap((response: Response) => response.json()),
         )
-        .subscribe((feed) => {
-          commit('setFeed', { feed });
-        });
+        .subscribe(
+          (response) => commit(append ? 'appendFeed' : 'setFeed', { response }),
+          () => commit('loadingError'),
+        );
     },
     [actions.SET_CATEGORY]: ({ commit }, category: number) => {
-      commit('setCategory', { category });
+      commit('setLoading', { loading: true });
+      commit('setNavigation', { category, query: null, offset: 0 });
     },
-    [actions.SET_QUERY]: ({ commit }, query: string) => {
-      commit('setQuery', { query });
+    [actions.SET_QUERY]: ({ commit, state }, query: string) => {
+      commit('setQuery', { query: '' });
+      commit('setOffset', { offset: 0 });
+    },
+    [actions.SEARCH_FEED]: ({ commit, dispatch }) => {
+      commit('setOffset', { offset: 0 });
+      return dispatch(actions.LOAD_FEED, { append: false });
+    },
+    [actions.NEXT_PAGE]: ({ commit, state, dispatch }) => {
+      commit('setOffset', { offset: state.navigation.offset += 10 });
+      return dispatch(actions.LOAD_FEED, { append: true });
+    },
+    [actions.SET_LOADING]: ({ commit }, loading: boolean) => {
+      commit('setLoading', { loading });
     },
   },
   mutations: {
+    setNavigation: (state, navigation) => { state.navigation = navigation; },
+    setOffset: (state, { offset }) => { state.navigation.offset = offset; },
     setCategories: (state, { categories }) => { state.categories = categories; },
-    setCategory: (state, { category }) => { state.category = category; },
-    setQuery: (state, { query }) => { state.query = query; },
-    setFeed: (state, { feed }) => { state.feed = feed; },
+    setCategory: (state, { category }) => { state.navigation.category = category; },
+    setQuery: (state, { query }) => { state.navigation.query = query; },
+    setFeed: (state, { response }) => {
+      state.feed = response.items;
+      state.total = response.total;
+      state.loading = false;
+    },
+    appendFeed: (state, { response }) => {
+      state.feed = [...state.feed, ...response.items];
+      state.total = response.total;
+      state.loading = false;
+    },
+    setLoading: (state, { loading }) => { state.loading = loading; },
+    loadingError: (state) => { state.loading = false; },
   },
 });
