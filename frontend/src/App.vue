@@ -1,61 +1,84 @@
 <template>
-  <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+  <v-app id="inspire">
+    <v-navigation-drawer v-model="drawer" app temporary>
+      <Menu :categories="categories" @setCategory="setCategory($event)"/>
+    </v-navigation-drawer>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+    <v-app-bar app color="indigo" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title>News feed</v-toolbar-title>
     </v-app-bar>
 
-    <v-content>
-      <HelloWorld/>
+    <v-content class="align-items-center justify-center">
+      <router-view></router-view>
     </v-content>
+    <v-footer color="indigo" app>
+      <span class="white--text">&copy; 2020</span>
+    </v-footer>
   </v-app>
 </template>
 
+<style type="scss">
+  .search__query {
+    max-width: 700px!important;
+    margin: 0 auto;
+  }
+</style>
+
 <script lang="ts">
 import Vue from 'vue';
-import HelloWorld from './components/HelloWorld.vue';
+import { mapGetters } from 'vuex';
+import * as actions from '@/store/actions';
+import { Category } from '@/types';
+import Menu from '@/components/Menu.vue';
 
 export default Vue.extend({
-  name: 'App',
-
+  name: 'App' as string,
   components: {
-    HelloWorld,
+    Menu,
+  },
+
+  mounted(): void {
+    this.$store.dispatch(actions.LOAD_CATEGORIES);
+  },
+
+  props: {
+    source: String,
+  },
+
+  computed: {
+    ...mapGetters(['categories', 'category', 'loading']),
+  },
+
+  methods: {
+    setCategory(category: Category | null) {
+      this.query = null;
+      this.$store
+        .dispatch(
+          actions.SET_CATEGORY,
+          category && category.id !== this.category ? category.id : null,
+        )
+        .then(() => this.$store.dispatch(actions.LOAD_FEED))
+        .then(() => { this.drawer = false; });
+    },
+    setQuery(query: string) {
+      this.$store
+        .dispatch(actions.SET_QUERY, query)
+        .then(() => this.$store.dispatch(actions.LOAD_FEED));
+    },
+    loadMore() {
+      if (!this.loading) {
+        this.$store.dispatch(actions.NEXT_PAGE);
+      }
+    },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
   },
 
   data: () => ({
-    //
+    drawer: true,
+    query: null,
   }),
 });
 </script>

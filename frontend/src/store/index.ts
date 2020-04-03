@@ -19,6 +19,7 @@ export default new Vuex.Store<State>({
     loading: false,
     categories: [],
     feed: [],
+    details: null,
   },
   getters: {
     categories: (state) => state.categories,
@@ -27,6 +28,7 @@ export default new Vuex.Store<State>({
     feed: (state) => state.feed,
     loading: (state) => state.loading,
     total: (state) => state.total,
+    details: (state) => state.details,
   },
   actions: {
     [actions.LOAD_CATEGORIES]: ({ commit }) => {
@@ -74,6 +76,16 @@ export default new Vuex.Store<State>({
     [actions.SET_LOADING]: ({ commit }, loading: boolean) => {
       commit('setLoading', { loading });
     },
+    [actions.SHOW_DETAILS]: ({ commit }, { slug }) => {
+      (new FeedService()).details(slug)
+        .pipe(
+          switchMap((response: Response) => response.json()),
+        )
+        .subscribe(
+          (details) => commit('setDetails', { details }),
+          () => commit('loadingError'),
+        );
+    },
   },
   mutations: {
     setNavigation: (state, navigation) => { state.navigation = navigation; },
@@ -93,5 +105,6 @@ export default new Vuex.Store<State>({
     },
     setLoading: (state, { loading }) => { state.loading = loading; },
     loadingError: (state) => { state.loading = false; },
+    setDetails: (state, { details = null } = {}) => { state.details = details; },
   },
 });

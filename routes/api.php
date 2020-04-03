@@ -24,3 +24,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 $router->post('search', 'Api\Search');
 $router->post('categories', 'Api\Categories');
+$router->get('details/{slug}', 'Api\Details');

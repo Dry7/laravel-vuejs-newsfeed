@@ -49,4 +49,5 @@ export interface State {
   loading: boolean;
   categories: Category[];
   feed: Feed[];
+  details: Feed | null;
 }

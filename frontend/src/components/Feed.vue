@@ -2,7 +2,7 @@
   <div>
     <v-container fluid class="align-items-center">
       <v-row dense>
-        <v-col :cols="12">
+        <v-col :offset="3" :cols="6">
           <DynamicScroller
             :items="feed"
             :min-item-size="264"
@@ -17,28 +17,7 @@
                 :size-dependencies="[item.title, image(item)]"
                 :data-index="index"
               >
-                <v-card
-                  class="mx-auto mb-3"
-                  max-width="700"
-                >
-                  <v-img
-                    class="white--text align-end"
-                    height="200px"
-                    :src="image(item)"
-                    :lazy-src="placeholder"
-                  >
-                    <template v-slot:placeholder>
-                      <v-row
-                        class="fill-height ma-0"
-                        align="center"
-                        justify="center"
-                      >
-                        <v-progress-circular indeterminate color="grey lighten-5" />
-                      </v-row>
-                    </template>
-                  </v-img>
-                  <v-card-title v-html="item.title" />
-                </v-card>
+                <FeedItem :item="item" :details="false" />
               </DynamicScrollerItem>
             </template>
           </DynamicScroller>
@@ -56,12 +35,17 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { LOAD_FEED, SEARCH_FEED } from '@/store/actions';
+import { LOAD_FEED } from '@/store/actions';
 import { mapGetters } from 'vuex';
 import { Feed } from '@/types';
+import FeedItem from '@/components/FeedItem.vue';
 
 export default Vue.extend({
   name: 'Feed' as string,
+
+  components: {
+    FeedItem,
+  },
 
   mounted(): void {
     this.$store.dispatch(LOAD_FEED);
@@ -74,6 +58,9 @@ export default Vue.extend({
     loadMore() {
       this.$emit('load-more');
     },
+    to(item: Feed) {
+      this.$router.push(`details/${item.slug}`);
+    },
   },
 
   computed: {
@@ -81,7 +68,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    placeholder: 'https://picsum.photos/id/11/100/60',
+    placeholder: 'http://via.placeholder.com/1200x628',
   }),
 });
 </script>

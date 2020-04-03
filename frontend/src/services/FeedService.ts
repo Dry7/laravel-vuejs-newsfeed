@@ -14,6 +14,10 @@ class FeedService {
     return fromFetch(`${this.endpoint}search?${FeedService.buildQuery(navigation)}`, { method: 'POST' });
   }
 
+  details(slug: string): Observable<Response> {
+    return fromFetch(`${this.endpoint}details/${slug}`);
+  }
+
   private static buildQuery(navigation: SearchRequest): string {
     const url = [`offset=${navigation.offset}`];
     if (navigation.category !== null && navigation.category > 0) {

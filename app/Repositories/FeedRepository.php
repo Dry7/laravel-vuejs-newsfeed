@@ -34,6 +34,14 @@ class FeedRepository
         return new ItemsResult($items, (int)($items->first()->total ?? 0));
     }
 
+    public function details(string $slug): Feed
+    {
+        /** @var Feed $feed */
+        $feed = Feed::query()->where('slug', $slug)->firstOrFail();
+
+        return $feed;
+    }
+
     protected function escapeLike(string $query): string
     {
         return preg_replace('/%/', '\%', $query);
