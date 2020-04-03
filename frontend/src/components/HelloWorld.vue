@@ -34,15 +34,21 @@
     </v-app-bar>
 
     <v-content class="align-items-center justify-center">
-      <v-text-field v-model="query" v-debounce:300="setQuery"
-                    style="max-width: 700px; margin: 0 auto;" />
-      <Feed></Feed>
+      <v-text-field v-model="query" v-debounce:300="setQuery" class="search__query" />
+      <Feed />
     </v-content>
     <v-footer color="indigo" app>
       <span class="white--text">&copy; 2020</span>
     </v-footer>
   </v-app>
 </template>
+
+<style type="scss">
+  .search__query {
+    max-width: 700px!important;
+    margin: 0 auto;
+  }
+</style>
 
 <script lang="ts">
 import Vue from 'vue';
