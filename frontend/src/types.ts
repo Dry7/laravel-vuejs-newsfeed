@@ -7,6 +7,7 @@ interface Timestamps {
   published: string;
   modified: string;
 }
+
 export interface Media {
   type: string;
   media: {
@@ -39,6 +40,8 @@ export interface Feed {
 }
 
 export interface State {
-  categories: Category[],
-  feed: Feed[],
+  categories: Category[];
+  category: number | null;
+  query: string | null;
+  feed: Feed[];
 }
