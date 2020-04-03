@@ -76,6 +76,7 @@ class FeedRepositoryTest extends TestCase
 
     public function testSearchByCategory(): void
     {
+        // arrange
         $category = factory(Category::class)->create(['id' => 1]);
 
         factory(Feed::class, 10)
@@ -94,6 +95,7 @@ class FeedRepositoryTest extends TestCase
 
     public function testSearchByQuery(): void
     {
+        // arrange
         factory(Feed::class)->create(['title' => 'Cosmology in crisis as evidence suggests']);
         factory(Feed::class)->create(['title' => 'A tech apocalypse is inevitable without the humanities']);
 
@@ -104,6 +106,19 @@ class FeedRepositoryTest extends TestCase
 
         // assert
         self::assertCount(1, $response->getItems());
+    }
+
+    public function testDetails(): void
+    {
+        // arrange
+        $feed = factory(Feed::class)->create(['slug' => 'why-researchers-should-make-sure-robots-dont-become-weapons']);
+        $repository = new FeedRepository();
+
+        // act
+        $response = $repository->details('why-researchers-should-make-sure-robots-dont-become-weapons');
+
+        // assert
+        self::assertEquals($feed->id, $response->id);
     }
 
     private function mockRequest(int $category = 0, ?string $query = null, int $offset = 0, int $limit = 10): SearchRequest
