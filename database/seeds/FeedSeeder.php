@@ -23,7 +23,7 @@ class FeedSeeder extends Seeder
             $feed = Feed::firstOrCreate(
                 ['slug' => $news->slug],
                 [
-                    'title' => $news->title,
+                    'title' => html_entity_decode($news->title),
                     'content' => $news->content,
                     'created_at' => $news->properties->published,
                     'updated_at' => $news->properties->modified,
