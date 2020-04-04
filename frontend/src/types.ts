@@ -28,10 +28,17 @@ export interface Media {
   }
 }
 
+interface Content {
+  type: string;
+  content: string;
+  attributes: null;
+}
+
 export interface Feed {
   id: number;
   title: string;
   slug: string;
+  content: Content[];
   categories: {
     primary: string | null;
     additional: string[];

@@ -47,8 +47,7 @@ export default Vue.extend({
   },
 
   mounted(): void {
-    const images = document
-      .querySelectorAll('.v-card__text img[data-src]') as NodeListOf<HTMLImageElement>;
+    const images = this.$el.querySelectorAll('.v-card__text img[data-src]') as NodeListOf<HTMLImageElement>;
     images
       .forEach((img: HTMLImageElement) => img.setAttribute('src', img.getAttribute('data-src') ?? ''));
   },
