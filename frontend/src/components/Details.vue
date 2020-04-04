@@ -25,12 +25,7 @@ export default Vue.extend({
   },
 
   created(): void {
-    console.log(this.$route.params.slug);
     this.$store.dispatch(SHOW_DETAILS, { slug: this.$route.params.slug });
-  },
-
-  mounted(): void {
-    console.log(this.details);
   },
 });
 </script>
