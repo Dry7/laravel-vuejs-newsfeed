@@ -80,7 +80,7 @@
   "jest": {
     "preset": "@vue/cli-plugin-unit-jest/presets/typescript-and-babel",
     "collectCoverage": true,
-    "collectCoverageFrom": ["**/*.{js,vue}", "!**/node_modules/**"],
-    "coverageReporters": ["html", "text-summary"]
+    "collectCoverageFrom": ["**/src/*.{ts,vue}", "**/src/*/*.{ts,vue}", "!**/node_modules/**"],
+    "coverageReporters": ["html", "text"]
   }
 }

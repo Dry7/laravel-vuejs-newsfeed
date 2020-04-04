@@ -15,11 +15,6 @@ const createComponent = function (options: { propsData: { item: Feed, details: b
   localVue.use(Vuex);
   localVue.use(Vuetify);
 
-  // actions = {};
-  // store = new Vuex.Store({
-  //   actions
-  // });
-
   const wrapper = mount(FeedItem, {
     propsData: options.propsData,
     localVue,
