@@ -1,9 +1,8 @@
-import { Wrapper } from '@vue/test-utils';
 import Vue from 'vue';
-import Details from '@/components/Details.vue';
+import { Wrapper } from '@vue/test-utils';
 
 class DetailsPage {
-  constructor(private readonly wrapper: Wrapper<Details>) {
+  constructor(private readonly wrapper: Wrapper<Vue>) {
   }
 
   feedItem(): Wrapper<Vue> {

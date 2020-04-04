@@ -7,14 +7,14 @@
             :items="feed"
             :min-item-size="264"
             page-mode
-            v-infinite-scroll="loadMore"
+            v-infinite-scroll="() => this.$emit('load-more')"
           >
             <template v-slot="{ item, index, active }">
               <DynamicScrollerItem
                 class="scroller"
                 :item="item"
                 :active="active"
-                :size-dependencies="[item.title, image(item)]"
+                :size-dependencies="[item.title, item.media]"
                 :data-index="index"
               >
                 <FeedItem :item="item" :details="false" />
@@ -51,24 +51,8 @@ export default Vue.extend({
     this.$store.dispatch(LOAD_FEED);
   },
 
-  methods: {
-    image(item: Feed) {
-      return item.media.length > 0 ? item.media[0].media.attributes.url : this.placeholder;
-    },
-    loadMore() {
-      this.$emit('load-more');
-    },
-    to(item: Feed) {
-      this.$router.push(`details/${item.slug}`);
-    },
-  },
-
   computed: {
     ...mapGetters(['feed']),
   },
-
-  data: () => ({
-    placeholder: 'http://via.placeholder.com/1200x628',
-  }),
 });
 </script>

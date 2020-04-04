@@ -1,9 +1,8 @@
-import { Wrapper } from '@vue/test-utils';
-import FeedItem from '@/components/FeedItem.vue';
 import Vue from 'vue';
+import { Wrapper } from '@vue/test-utils';
 
 class FeedItemPage {
-  constructor(private readonly wrapper: Wrapper<FeedItem>) {
+  constructor(private readonly wrapper: Wrapper<Vue>) {
   }
 
   card(): Wrapper<Vue> {

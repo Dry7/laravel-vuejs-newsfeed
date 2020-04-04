@@ -1,10 +1,9 @@
-import { Wrapper } from '@vue/test-utils';
 import Vue from 'vue';
-import Menu from '@/components/Menu.vue';
+import { Wrapper } from '@vue/test-utils';
 import MenuCategoriesPage from './MenuCategoriesPage';
 
 class MenuPage {
-  constructor(private readonly wrapper: Wrapper<Menu>) {
+  constructor(private readonly wrapper: Wrapper<Vue>) {
   }
 
   home(): Wrapper<Vue> {
