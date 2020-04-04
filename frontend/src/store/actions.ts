@@ -38,7 +38,6 @@ export default {
     commit('setLoading', { loading: true });
     (new FeedService()).all(state.navigation)
       .pipe(
-        debounceTime(1000),
         switchMap((response: Response) => response.json()),
       )
       .subscribe(
