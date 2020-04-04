@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field v-model="query" v-debounce:300="setQuery" class="search__query" />
+    <v-text-field v-debounce:300="setQuery" class="search__query" />
     <Feed @load-more="loadMore" />
   </div>
 </template>
@@ -34,6 +34,7 @@ export default Vue.extend({
 
   methods: {
     setQuery(query: string) {
+      console.log('setQuery');
       this.$store
         .dispatch(actions.SET_QUERY, query)
         .then(() => this.$store.dispatch(actions.LOAD_FEED));
@@ -44,10 +45,5 @@ export default Vue.extend({
       }
     },
   },
-
-  data: () => ({
-    drawer: true,
-    query: null,
-  }),
 });
 </script>

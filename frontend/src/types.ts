@@ -46,15 +46,22 @@ export interface Feed {
   media: Media[];
 }
 
+export interface Navigation {
+  offset: number;
+  category: number | null;
+  query: string | null;
+}
+
 export interface State {
-  navigation: {
-    offset: number;
-    category: number | null;
-    query: string | null;
-  };
+  navigation: Navigation;
   total: number;
   loading: boolean;
   categories: Category[];
   feed: Feed[];
   details: Feed | null;
+}
+
+export interface ItemsResponse<T> {
+  items: T[];
+  total: number;
 }
