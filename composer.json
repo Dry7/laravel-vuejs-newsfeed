@@ -55,6 +55,7 @@
             "@php artisan package:discover --ansi",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "@php -r \"file_exists('docker-compose.override.yml') || copy('docker-compose.override.yml.dist', 'docker-compose.override.yml');\"",
+            "@php artisan key:generate --ansi",
             "@php artisan migrate",
             "@php artisan db:seed"
         ],
