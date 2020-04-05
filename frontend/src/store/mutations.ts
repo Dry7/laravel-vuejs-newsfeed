@@ -31,11 +31,11 @@ export default {
   setLoading: (state: State, { loading }: { loading: boolean }) => { state.loading = loading; },
   loadingError: (state: State) => { state.loading = false; },
   setDetails: (
-      state: State,
-      { details }:
-        {  details: Feed | null  }
-        = { details: null }
-    ) => {
-      state.details = details;
-    },
+    state: State,
+    { details }:
+        { details: Feed | null }
+    = { details: null },
+  ) => {
+    state.details = details;
+  },
 };

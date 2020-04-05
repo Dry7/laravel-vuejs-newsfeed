@@ -8,7 +8,7 @@ interface SearchRequest {
 }
 
 class FeedService {
-  endpoint = 'http://localhost:8282/api/v1/';
+  endpoint = process.env.VUE_APP_ENDPOINT;
 
   all(navigation: SearchRequest): Observable<Response> {
     return fromFetch(`${this.endpoint}search?${FeedService.buildQuery(navigation)}`, { method: 'POST' });

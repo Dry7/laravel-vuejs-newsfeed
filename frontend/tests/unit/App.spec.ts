@@ -10,7 +10,6 @@ import vueDebounce from 'vue-debounce';
 
 import fetchMock from 'jest-fetch-mock';
 import feed from '../fixtures/feed';
-import categories from '../fixtures/categories';
 import AppPage from '../pages/AppPage';
 import {
   LOAD_CATEGORIES,

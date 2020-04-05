@@ -1,5 +1,5 @@
 import CategoryService from '@/services/CategoryService';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import FeedService from '@/services/FeedService';
 import { Commit, Dispatch } from 'vuex';
 import { State } from '@/types';
