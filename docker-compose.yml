@@ -15,6 +15,8 @@ services:
     volumes:
       - .:/var/www/newsfeed
     working_dir: /var/www/newsfeed
+    depends_on:
+      - composer
 
   nginx:
     image: nginx:1.17.9-alpine
@@ -22,8 +24,24 @@ services:
       - .:/var/www/newsfeed
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - php-fpm
       - postgres
+      - php-fpm
+      - node
+
+  node:
+    build:
+      context: ./docker/node
+      dockerfile: Dockerfile
+      args:
+        UIDD: ${UID:-1000}
+    volumes:
+      - ./frontend:/var/www/newsfeed/frontend
+    working_dir: /var/www/newsfeed/frontend
+    command: /bin/sh -c "yarn install && yarn build && chmod -R 0777 /var/www/newsfeed/frontend && chown -R 1000:1000 /var/www/newsfeed/frontend/dist"
+    environment:
+      VUE_APP_ENDPOINT: http://localhost:8282/api/v1/
+    depends_on:
+      - php-fpm
 
   composer:
     build: ./docker/php
@@ -31,8 +49,6 @@ services:
     volumes:
       - .:/var/www/newsfeed
     working_dir: /var/www/newsfeed
-    depends_on:
-      - postgres
 
   phpunit:
     build: ./docker/php

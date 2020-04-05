@@ -37,7 +37,6 @@
 import Vue from 'vue';
 import { LOAD_FEED } from '@/store/actions';
 import { mapGetters } from 'vuex';
-import { Feed } from '@/types';
 import FeedItem from '@/components/FeedItem.vue';
 
 export default Vue.extend({
