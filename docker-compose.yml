@@ -2,9 +2,7 @@ version: "3.7"
 services:
 
   postgres:
-    image: postgres:12.2-alpine
-    volumes:
-      - ./docker/postgres/init_testing_db.sql:/docker-entrypoint-initdb.d/init_testing_db.sql
+    build: ./docker/postgres
     environment:
       POSTGRES_USER: newsfeed
       POSTGRES_PASSWORD: newsfeed
@@ -37,7 +35,7 @@ services:
     volumes:
       - ./frontend:/var/www/newsfeed/frontend
     working_dir: /var/www/newsfeed/frontend
-    command: /bin/sh -c "yarn install && yarn build && chmod -R 0777 /var/www/newsfeed/frontend && chown -R 1000:1000 /var/www/newsfeed/frontend/dist"
+    command: /bin/sh -c "yarn install && yarn build && chown -R 1000:1000 /var/www/newsfeed/frontend/dist"
     environment:
       VUE_APP_ENDPOINT: http://localhost:8282/api/v1/
     depends_on:
