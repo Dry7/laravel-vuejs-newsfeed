@@ -49,6 +49,8 @@ services:
     volumes:
       - .:/var/www/newsfeed
     working_dir: /var/www/newsfeed
+    depends_on:
+      - postgres
 
   phpunit:
     build: ./docker/php
