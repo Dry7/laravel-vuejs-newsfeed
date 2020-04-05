@@ -8,19 +8,7 @@ import actions, {
   SET_QUERY, SHOW_DETAILS,
 } from '@/store/actions';
 import fetchMock from 'jest-fetch-mock';
-
-const state = {
-  navigation: {
-    offset: 10,
-    category: 5,
-    query: 'crisis',
-  },
-  total: 100,
-  loading: false,
-  categories,
-  feed,
-  details: feed[0],
-};
+import { state } from '../../helpers';
 
 global.fetch = require('jest-fetch-mock');
 

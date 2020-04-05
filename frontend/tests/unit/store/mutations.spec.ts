@@ -1,19 +1,7 @@
 import categories from '../../fixtures/categories';
 import feed from '../../fixtures/feed';
 import mutations from '@/store/mutations';
-
-const defaultState = {
-  navigation: {
-    offset: 10,
-    category: 5,
-    query: 'crisis',
-  },
-  total: 100,
-  loading: false,
-  categories,
-  feed,
-  details: feed[0],
-};
+import { state as defaultState } from '../../helpers';
 
 describe('Store mutations', () => {
   it('setNavigation', () => {
@@ -106,5 +94,13 @@ describe('Store mutations', () => {
     mutations.setDetails(state, { details: feed[0] });
 
     expect(state.details).toMatchObject(feed[0]);
+  });
+
+  it('setDetails', () => {
+    const state = {...defaultState, loading: true};
+
+    mutations.setDetails(state);
+
+    expect(state.details).toBeNull();
   });
 });

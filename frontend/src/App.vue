@@ -62,16 +62,6 @@ export default Vue.extend({
         .then(() => this.$store.dispatch(actions.LOAD_FEED))
         .then(() => { this.drawer = false; });
     },
-    setQuery(query: string) {
-      this.$store
-        .dispatch(actions.SET_QUERY, query)
-        .then(() => this.$store.dispatch(actions.LOAD_FEED));
-    },
-    loadMore() {
-      if (!this.loading) {
-        this.$store.dispatch(actions.NEXT_PAGE);
-      }
-    },
     scrollToTop() {
       window.scrollTo(0, 0);
     },

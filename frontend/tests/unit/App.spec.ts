@@ -1,9 +1,8 @@
-import Vue from 'vue';
 import Vuex, { Store } from 'vuex';
 import vuetify from '@/plugins/vuetify';
 import VueVirtualScroller from "vue-virtual-scroller";
 import infiniteScroll from 'vue-infinite-scroll';
-import { createLocalVue, mount, shallowMount } from '@vue/test-utils';
+import { createLocalVue, mount } from '@vue/test-utils';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
@@ -22,25 +21,14 @@ import {
   SHOW_DETAILS
 } from '@/store/actions';
 import { State } from '@/types';
-
-const state = {
-  navigation: {
-    offset: 10,
-    category: 5,
-    query: 'crisis',
-  },
-  total: 100,
-  loading: false,
-  categories,
-  feed,
-  details: feed[0],
-};
+import { mockIntersectionObserver, state } from '../helpers';
 
 store.replaceState(state);
 
 global.fetch = require('jest-fetch-mock');
 
 const createComponent = function (options: { mocks?: Object, store?: Store<State> }) {
+
   const localVue = createLocalVue();
 
   localVue.use(vuetify);
@@ -87,9 +75,11 @@ const createComponent = function (options: { mocks?: Object, store?: Store<State
 describe('Feed.vue', () => {
   beforeEach(() => {
     fetchMock.mockAbort();
+    mockIntersectionObserver();
   });
 
   it('Call load categories', () => {
+
     const { actions } = createComponent({});
 
     expect(actions[LOAD_CATEGORIES].mock.calls.length).toEqual(1);
@@ -119,42 +109,8 @@ describe('Feed.vue', () => {
     expect(window.scrollTo).toHaveBeenCalled();
   });
 
-  it('loadMore when loading false', () => {
-    const { wrapper, actions, store } = createComponent({});
-
-    store.replaceState({ ...state, loading: false });
-
-    (wrapper as any).vm.loadMore();
-
-    expect(actions[NEXT_PAGE].mock.calls.length).toEqual(1);
-  });
-
-  it('loadMore when loading true', () => {
-    const { wrapper, actions, store } = createComponent({});
-
-    store.replaceState({ ...state, loading: true });
-
-    (wrapper as any).vm.loadMore();
-
-    expect(actions[NEXT_PAGE]).toHaveBeenCalledTimes(0);
-  });
-
-  it('setQuery', (done) => {
-    const { wrapper, actions, store } = createComponent({});
-
-    store.replaceState({ ...state, loading: true });
-
-    (wrapper as any).vm.setQuery('query');
-
-    setTimeout(() => {
-      expect(actions[SET_QUERY]).toHaveBeenCalledTimes(1);
-      expect(actions[LOAD_FEED]).toHaveBeenCalledTimes(1);
-      done();
-    });
-  });
-
   it('setCategory', (done) => {
-    const { wrapper, actions, store } = createComponent({});
+    const { wrapper, actions } = createComponent({});
 
     window.scrollTo = jest.fn();
 

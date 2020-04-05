@@ -34,7 +34,6 @@ export default Vue.extend({
 
   methods: {
     setQuery(query: string) {
-      console.log('setQuery');
       this.$store
         .dispatch(actions.SET_QUERY, query)
         .then(() => this.$store.dispatch(actions.LOAD_FEED));

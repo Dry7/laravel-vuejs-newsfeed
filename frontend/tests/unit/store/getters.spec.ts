@@ -1,19 +1,7 @@
 import categories from '../../fixtures/categories';
 import feed from '../../fixtures/feed';
 import getters from '@/store/getters';
-
-const state = {
-  navigation: {
-    offset: 10,
-    category: 5,
-    query: 'crisis',
-  },
-  total: 100,
-  loading: false,
-  categories,
-  feed,
-  details: feed[0],
-};
+import { state } from '../../helpers';
 
 describe('Store getters', () => {
   it('categories', () => {
