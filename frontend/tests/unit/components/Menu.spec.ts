@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuetify from 'vuetify';
-import { createLocalVue, mount, shallowMount } from '@vue/test-utils';
+import { createLocalVue, mount } from '@vue/test-utils';
 import Menu from '@/components/Menu.vue';
 import MenuPage from '../../pages/MenuPage';
 import categories from '../../fixtures/categories';

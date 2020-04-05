@@ -91,6 +91,9 @@
     "coverageReporters": [
       "html",
       "text"
+    ],
+    "transformIgnorePatterns": [
+        "node_modules/?!(vuetify)"
     ]
   }
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import { createLocalVue, mount, Wrapper } from '@vue/test-utils';
-import Vuex, { Store } from 'vuex';
-import { Feed, State } from '@/types';
+import { createLocalVue, mount } from '@vue/test-utils';
+import Vuex from 'vuex';
+import { Feed } from '@/types';
 import Vuetify from 'vuetify';
 import FeedItem from '@/components/FeedItem.vue';
 import feed from '../../fixtures/feed';
