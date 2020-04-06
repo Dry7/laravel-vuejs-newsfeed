@@ -6,3 +6,5 @@ and wait until the frontend tests are completed
 
 * Laravel coverage - /storage/coverage
 * Vue coverage - /frontend/coverage
+
+* URL - http://localhost:8282
