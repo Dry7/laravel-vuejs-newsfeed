@@ -26,6 +26,7 @@ class FeedRepository
                 !empty($request->getQuery()),
                 fn (Builder $query) => $query
                     ->where('feed.title',  '~*',  $this->escapeLike($request->getQuery()))
+                    ->orWhereRaw("feed.content #>>'{0,content}' ~* ?",  $this->escapeLike($request->getQuery()))
             )
             ->offset($request->getOffset())
             ->limit($request->getLimit())

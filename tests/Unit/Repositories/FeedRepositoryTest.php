@@ -108,6 +108,25 @@ class FeedRepositoryTest extends TestCase
         self::assertCount(1, $response->getItems());
     }
 
+    public function testSearchByQueryInContent(): void
+    {
+        // arrange
+        factory(Feed::class)->create(['title' => 'Test', 'content' => [
+            ['type' => 'html', 'content' => 'Text with crisis', 'attributes' => null]
+        ]]);
+        factory(Feed::class)->create(['title' => 'Test', 'content' => [
+            ['type' => 'html', 'content' => 'test', 'attributes' => null]
+        ]]);
+
+        $repository = new FeedRepository();
+
+        // act
+        $response = $repository->search($this->mockRequest(0, 'crisis'));
+
+        // assert
+        self::assertCount(1, $response->getItems());
+    }
+
     public function testDetails(): void
     {
         // arrange
