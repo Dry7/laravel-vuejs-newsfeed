@@ -8,3 +8,10 @@ and wait until the frontend tests are completed
 * Vue coverage - /frontend/coverage
 
 * URL - http://localhost:8282
+
+Laravel
+![Laravel](https://i.imgur.com/4q7OIID.png)
+
+
+Vue
+![Vue](https://i.imgur.com/KIvRg8q.png)
