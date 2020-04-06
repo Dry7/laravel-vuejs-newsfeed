@@ -26,7 +26,7 @@ describe('Store actions', () => {
     actions[LOAD_CATEGORIES]({ commit, state, dispatch });
 
     setTimeout(() => {
-      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:8282/api/v1/categories');
+      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost/api/v1/categories');
       expect(commit.mock.calls).toMatchObject([['setCategories', { categories }]]);
       done();
     });
@@ -41,7 +41,7 @@ describe('Store actions', () => {
     actions[LOAD_CATEGORIES]({ commit, state, dispatch });
 
     setTimeout(() => {
-      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:8282/api/v1/categories');
+      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost/api/v1/categories');
       expect(commit.mock.calls).toMatchObject([['loadingError']]);
       done();
     });
@@ -56,7 +56,7 @@ describe('Store actions', () => {
     actions[LOAD_FEED]({ commit, state: { ...state }, dispatch }, { append: false });
 
     setTimeout(() => {
-      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:8282/api/v1/search?offset=10&category=5&query=crisis');
+      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost/api/v1/search?offset=10&category=5&query=crisis');
       expect(commit.mock.calls).toMatchObject([
         ['setLoading', { loading: true }],
         ['setFeed', { response: { items: feed, total: 1 } }],
@@ -74,7 +74,7 @@ describe('Store actions', () => {
     actions[LOAD_FEED]({ commit, state: { ...state }, dispatch }, { append: true });
 
     setTimeout(() => {
-      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:8282/api/v1/search?offset=10&category=5&query=crisis');
+      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost/api/v1/search?offset=10&category=5&query=crisis');
       expect(commit.mock.calls).toMatchObject([
         ['setLoading', { loading: true }],
         ['appendFeed', { response: { items: feed, total: 1 } }],
@@ -111,7 +111,7 @@ describe('Store actions', () => {
     actions[LOAD_FEED]({ commit, state, dispatch });
 
     setTimeout(() => {
-      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:8282/api/v1/search?offset=10&category=5&query=crisis');
+      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost/api/v1/search?offset=10&category=5&query=crisis');
       expect(commit.mock.calls).toMatchObject([
         ['setLoading', { loading: true }],
         ['loadingError'],
@@ -185,7 +185,7 @@ describe('Store actions', () => {
     );
 
     setTimeout(() => {
-      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:8282/api/v1/details/gift-the-avid-audiophile-in-your-life-these-headphones-from-shure');
+      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost/api/v1/details/gift-the-avid-audiophile-in-your-life-these-headphones-from-shure');
       expect(commit.mock.calls).toMatchObject([['setDetails', { details: feed[0] }]]);
       done();
     });
@@ -203,7 +203,7 @@ describe('Store actions', () => {
     );
 
     setTimeout(() => {
-      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost:8282/api/v1/details/gift-the-avid-audiophile-in-your-life-these-headphones-from-shure');
+      expect(fetchMock.mock.calls[0][0]).toBe('http://localhost/api/v1/details/gift-the-avid-audiophile-in-your-life-these-headphones-from-shure');
       expect(commit.mock.calls).toMatchObject([['loadingError']]);
       done();
     });

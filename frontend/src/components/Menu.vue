@@ -1,6 +1,8 @@
 <template>
   <v-list-item-group dense class="menu">
-    <v-list-item @click="() => this.$router.push('/')" class="menu__home">
+    <v-list-item @click="() => this.$route.name === 'Search'
+    ? $emit('setCategory', null)
+    : this.$router.push('/')" class="menu__home">
       <v-list-item-action><v-icon>mdi-home</v-icon></v-list-item-action>
       <v-list-item-content>
         <v-list-item-title>Home</v-list-item-title>

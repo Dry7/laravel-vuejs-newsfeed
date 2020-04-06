@@ -35,7 +35,7 @@ services:
     volumes:
       - ./frontend:/var/www/newsfeed/frontend
     working_dir: /var/www/newsfeed/frontend
-    command: /bin/sh -c "yarn install && yarn build && chown -R 1000:1000 /var/www/newsfeed/frontend/dist"
+    command: /bin/sh -c "yarn install && yarn build && chown -R 1000:1000 /var/www/newsfeed/frontend/dist && yarn test:unit"
     environment:
       VUE_APP_ENDPOINT: http://localhost:8282/api/v1/
     depends_on:
