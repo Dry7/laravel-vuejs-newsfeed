@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field v-debounce:300="setQuery" class="search__query" />
+    <v-text-field v-model="query" v-debounce:300="setQuery" class="search__query" />
     <Feed @load-more="loadMore" />
   </div>
 </template>
@@ -29,7 +29,7 @@ export default Vue.extend({
   },
 
   computed: {
-    ...mapGetters(['category', 'loading']),
+    ...mapGetters(['category', 'loading', 'query']),
   },
 
   methods: {

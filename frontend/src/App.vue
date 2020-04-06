@@ -53,7 +53,6 @@ export default Vue.extend({
   methods: {
     setCategory(category: Category | null) {
       this.scrollToTop();
-      this.query = null;
       this.$store
         .dispatch(
           actions.SET_CATEGORY,

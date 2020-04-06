@@ -47,6 +47,7 @@ const createComponent = function (options: { mocks?: Object, store?: Store<State
     details: () => feed[0],
     loading: (state: State) => state.loading,
     category: () => null,
+    query: () => null,
   };
   const store = new Vuex.Store<State>({
     actions,
