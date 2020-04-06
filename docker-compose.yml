@@ -27,11 +27,7 @@ services:
       - node
 
   node:
-    build:
-      context: ./docker/node
-      dockerfile: Dockerfile
-      args:
-        UIDD: ${UID:-1000}
+    image: node:13.12.0-alpine3.11
     volumes:
       - ./frontend:/var/www/newsfeed/frontend
     working_dir: /var/www/newsfeed/frontend

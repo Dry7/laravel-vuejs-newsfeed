@@ -21,7 +21,6 @@ import {
 } from '@/store/actions';
 import { State } from '@/types';
 import { mockIntersectionObserver, state } from '../helpers';
-
 store.replaceState(state);
 
 global.fetch = require('jest-fetch-mock');
@@ -30,7 +29,6 @@ const createComponent = function (options: { mocks?: Object, store?: Store<State
 
   const localVue = createLocalVue();
 
-  localVue.use(vuetify);
   localVue.use(VueVirtualScroller);
   localVue.use(infiniteScroll);
   localVue.use(vueDebounce);

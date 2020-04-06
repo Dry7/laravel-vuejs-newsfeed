@@ -30,7 +30,8 @@ class AlterFeedAddIndexes extends Migration
     public function down()
     {
         Schema::table('feed', function (Blueprint $table) {
-            $table->dropIndex(['ix__feed__title', 'ix__feed__content']);
+            $table->dropIndex('ix__feed__title');
+            DB::statement('DROP INDEX ix__feed__content');
         });
     }
 }
