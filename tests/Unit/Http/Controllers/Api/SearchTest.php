@@ -32,11 +32,15 @@ class SearchTest extends TestCase
     {
         // arrange
         $items = array_map(static function (array $data) {
-            $feed = new Feed(array_intersect_key($data, ['title' => '', 'slug' => '', 'content' => '']));
+            $feed = new Feed(
+                array_intersect_key($data, ['title' => '', 'slug' => '', 'content' => ''])
+            );
             $feed->save();
 
             if (isset($data['categories']['primary'])) {
-                $feed->categories()->create($data['categories']['primary'], ['primary' => true]);
+                $feed
+                    ->categories()
+                    ->create($data['categories']['primary'], ['primary' => true]);
             }
 
             $feed->categories()->createMany($data['categories']['additional'] ?? []);
@@ -52,8 +56,7 @@ class SearchTest extends TestCase
             ->with($request)
             ->once()
             ->andReturn(new ItemsResult(collect($items), count($items)))
-            ->getMock()
-            ;
+            ->getMock();
 
         // act
         /** @var FeedListView $response */
@@ -76,46 +79,66 @@ class SearchTest extends TestCase
                     ['title' => 'test', 'slug' => 'slug', 'content' => []],
                     ['title' => 'test2', 'slug' => 'slug2', 'content' => []],
                 ],
-                'expected' => '{"items":[{"id":1,"title":"test","slug":"slug","content":[],"categories":{"primary":null,"additional":[]},"media":[]},{"id":2,"title":"test2","slug":"slug2","content":[],"categories":{"primary":null,"additional":[]},"media":[]}],"total":2}',
+                'expected' =>
+                    '{"items":[{"id":1,"title":"test","slug":"slug","content":[],"categories":{"primary":null,"additional":[]},"media":[]},{"id":2,"title":"test2","slug":"slug2","content":[],"categories":{"primary":null,"additional":[]},"media":[]}],"total":2}',
             ],
             'item with content' => [
                 'items' => [
-                    ['title' => 'test', 'slug' => 'slug', 'content' => [['type' => 'html', 'content' => '<p>content<\/p>', 'attributes' => null]]],
+                    [
+                        'title' => 'test',
+                        'slug' => 'slug',
+                        'content' => [
+                            [
+                                'type' => 'html',
+                                'content' => '<p>content<\/p>',
+                                'attributes' => null,
+                            ],
+                        ],
+                    ],
                 ],
-                'expected' => '{"items":[{"id":1,"title":"test","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":null,"additional":[]},"media":[]}],"total":1}',
+                'expected' =>
+                    '{"items":[{"id":1,"title":"test","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":null,"additional":[]},"media":[]}],"total":1}',
             ],
             'item with additional categories' => [
                 'items' => [
                     [
                         'title' => 'test',
                         'slug' => 'slug',
-                        'content' => [['type' => 'html', 'content' => '<p>content<\/p>', 'attributes' => null]],
-                        'categories' => [
-                            'additional' => [
-                                ['name' => 'category1'],
-                                ['name' => 'category2'],
+                        'content' => [
+                            [
+                                'type' => 'html',
+                                'content' => '<p>content<\/p>',
+                                'attributes' => null,
                             ],
+                        ],
+                        'categories' => [
+                            'additional' => [['name' => 'category1'], ['name' => 'category2']],
                         ],
                     ],
                 ],
-                'expected' => '{"items":[{"id":1,"title":"test","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":null,"additional":["category1","category2"]},"media":[]}],"total":1}',
+                'expected' =>
+                    '{"items":[{"id":1,"title":"test","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":null,"additional":["category1","category2"]},"media":[]}],"total":1}',
             ],
             'item with primary category' => [
                 'items' => [
                     [
                         'title' => 'test',
                         'slug' => 'slug',
-                        'content' => [['type' => 'html', 'content' => '<p>content<\/p>', 'attributes' => null]],
+                        'content' => [
+                            [
+                                'type' => 'html',
+                                'content' => '<p>content<\/p>',
+                                'attributes' => null,
+                            ],
+                        ],
                         'categories' => [
                             'primary' => ['name' => 'category1'],
-                            'additional' => [
-                                ['name' => 'category2'],
-                                ['name' => 'category3'],
-                            ],
+                            'additional' => [['name' => 'category2'], ['name' => 'category3']],
                         ],
                     ],
                 ],
-                'expected' => '{"items":[{"id":1,"title":"test","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":"category1","additional":["category2","category3"]},"media":[]}],"total":1}',
+                'expected' =>
+                    '{"items":[{"id":1,"title":"test","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":"category1","additional":["category2","category3"]},"media":[]}],"total":1}',
             ],
             'item with media' => [
                 'items' => [
@@ -123,24 +146,30 @@ class SearchTest extends TestCase
                         'title' => 'test',
                         'slug' => 'slug',
                         'content' => [],
-                        'media' => [[
-                            'link' => 'https://localhost/v2/media/copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3',
-                            'token' => '85b597bf-7472-5b72-99c8-d304f5d3a3e5',
-                            'source' => 'archive',
-                            'slug' => 'copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3',
-                            'type' => 'image',
-                            'url' => 'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2019/12/Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-...-2-2.png',
-                            'width' => 1200,
-                            'height' => 628,
-                            'copyright' => '',
-                            'caption' => '',
-                            'credit' => '',
-                            'created_at' => '2019-12-17T12:30:41+00:00',
-                            'updated_at' => '2019-12-17T12:30:41+00:00',
-                        ]],
+                        'media' => [
+                            [
+                                'link' =>
+                                    'https://localhost/v2/media/copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3',
+                                'token' => '85b597bf-7472-5b72-99c8-d304f5d3a3e5',
+                                'source' => 'archive',
+                                'slug' =>
+                                    'copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3',
+                                'type' => 'image',
+                                'url' =>
+                                    'https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2019/12/Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-...-2-2.png',
+                                'width' => 1200,
+                                'height' => 628,
+                                'copyright' => '',
+                                'caption' => '',
+                                'credit' => '',
+                                'created_at' => '2019-12-17T12:30:41+00:00',
+                                'updated_at' => '2019-12-17T12:30:41+00:00',
+                            ],
+                        ],
                     ],
                 ],
-                'expected' => '{"items":[{"id":1,"title":"test","slug":"slug","content":[],"categories":{"primary":null,"additional":[]},"media":[{"type":"featured","media":{"@link":"https:\/\/localhost\/v2\/media\/copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3","id":"85b597bf-7472-5b72-99c8-d304f5d3a3e5","source":"archive","slug":"copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3","type":"image","attributes":{"url":"https:\/\/cdn0.tnwcdn.com\/wp-content\/blogs.dir\/1\/files\/2019\/12\/Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-...-2-2.png","width":1200,"height":628,"copyright":"","caption":"","credit":""},"properties":{"published":"2019-12-17T12:30:41+00:00","modified":"2019-12-17T12:30:41+00:00"}}}]}],"total":1}',
+                'expected' =>
+                    '{"items":[{"id":1,"title":"test","slug":"slug","content":[],"categories":{"primary":null,"additional":[]},"media":[{"type":"featured","media":{"@link":"https:\/\/localhost\/v2\/media\/copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3","id":"85b597bf-7472-5b72-99c8-d304f5d3a3e5","source":"archive","slug":"copy-of-copy-of-copy-of-copy-of-copy-of-copy-of-2-3","type":"image","attributes":{"url":"https:\/\/cdn0.tnwcdn.com\/wp-content\/blogs.dir\/1\/files\/2019\/12\/Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-Copy-of-...-2-2.png","width":1200,"height":628,"copyright":"","caption":"","credit":""},"properties":{"published":"2019-12-17T12:30:41+00:00","modified":"2019-12-17T12:30:41+00:00"}}}]}],"total":1}',
             ],
         ];
     }

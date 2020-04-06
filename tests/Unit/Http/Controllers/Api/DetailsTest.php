@@ -25,14 +25,17 @@ class DetailsTest extends TestCase
     public function testInvoke(array $content, string $expected): void
     {
         // arrange
-        $feed = factory(Feed::class)->create(['title' => 'title', 'slug' => 'slug', 'content' => $content]);
+        $feed = factory(Feed::class)->create([
+            'title' => 'title',
+            'slug' => 'slug',
+            'content' => $content,
+        ]);
         /** @var FeedRepository $mock */
         $mock = $this->mock(FeedRepository::class)
             ->shouldReceive('details')
             ->with('slug')
             ->andReturn($feed)
-            ->getMock()
-            ;
+            ->getMock();
 
         // act
         /** @var CategoryListView $response */
@@ -48,11 +51,15 @@ class DetailsTest extends TestCase
         return [
             'without content' => [
                 'content' => [],
-                'expected' => '{"id":1,"title":"title","slug":"slug","content":[],"categories":{"primary":null,"additional":[]},"media":[]}',
+                'expected' =>
+                    '{"id":1,"title":"title","slug":"slug","content":[],"categories":{"primary":null,"additional":[]},"media":[]}',
             ],
             'with content' => [
-                'content' => [['type' => 'html', 'content' => '<p>content<\/p>', 'attributes' => null]],
-                'expected' => '{"id":1,"title":"title","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":null,"additional":[]},"media":[]}',
+                'content' => [
+                    ['type' => 'html', 'content' => '<p>content<\/p>', 'attributes' => null],
+                ],
+                'expected' =>
+                    '{"id":1,"title":"title","slug":"slug","content":[{"type":"html","content":"<p>content<\\\\\\/p>","attributes":null}],"categories":{"primary":null,"additional":[]},"media":[]}',
             ],
         ];
     }

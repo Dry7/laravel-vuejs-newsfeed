@@ -82,7 +82,7 @@ class FeedRepositoryTest extends TestCase
         factory(Feed::class, 10)
             ->create()
             ->take(3)
-            ->each(static fn (Feed $feed) => $feed->categories()->save($category));
+            ->each(static fn(Feed $feed) => $feed->categories()->save($category));
 
         $repository = new FeedRepository();
 
@@ -97,7 +97,9 @@ class FeedRepositoryTest extends TestCase
     {
         // arrange
         factory(Feed::class)->create(['title' => 'Cosmology in crisis as evidence suggests']);
-        factory(Feed::class)->create(['title' => 'A tech apocalypse is inevitable without the humanities']);
+        factory(Feed::class)->create([
+            'title' => 'A tech apocalypse is inevitable without the humanities',
+        ]);
 
         $repository = new FeedRepository();
 
@@ -111,12 +113,16 @@ class FeedRepositoryTest extends TestCase
     public function testSearchByQueryInContent(): void
     {
         // arrange
-        factory(Feed::class)->create(['title' => 'Test', 'content' => [
-            ['type' => 'html', 'content' => 'Text with crisis', 'attributes' => null]
-        ]]);
-        factory(Feed::class)->create(['title' => 'Test', 'content' => [
-            ['type' => 'html', 'content' => 'test', 'attributes' => null]
-        ]]);
+        factory(Feed::class)->create([
+            'title' => 'Test',
+            'content' => [
+                ['type' => 'html', 'content' => 'Text with crisis', 'attributes' => null],
+            ],
+        ]);
+        factory(Feed::class)->create([
+            'title' => 'Test',
+            'content' => [['type' => 'html', 'content' => 'test', 'attributes' => null]],
+        ]);
 
         $repository = new FeedRepository();
 
@@ -130,25 +136,40 @@ class FeedRepositoryTest extends TestCase
     public function testDetails(): void
     {
         // arrange
-        $feed = factory(Feed::class)->create(['slug' => 'why-researchers-should-make-sure-robots-dont-become-weapons']);
+        $feed = factory(Feed::class)->create([
+            'slug' => 'why-researchers-should-make-sure-robots-dont-become-weapons',
+        ]);
         $repository = new FeedRepository();
 
         // act
-        $response = $repository->details('why-researchers-should-make-sure-robots-dont-become-weapons');
+        $response = $repository->details(
+            'why-researchers-should-make-sure-robots-dont-become-weapons'
+        );
 
         // assert
         self::assertEquals($feed->id, $response->id);
     }
 
-    private function mockRequest(int $category = 0, ?string $query = null, int $offset = 0, int $limit = 10): SearchRequest
-    {
+    private function mockRequest(
+        int $category = 0,
+        ?string $query = null,
+        int $offset = 0,
+        int $limit = 10
+    ): SearchRequest {
         /** @var SearchRequest $mock */
         $mock = $this->mock(SearchRequest::class)
-            ->shouldReceive('getCategory')->andReturn($category)->getMock()
-            ->shouldReceive('getQuery')->andReturn($query)->getMock()
-            ->shouldReceive('getOffset')->andReturn($offset)->getMock()
-            ->shouldReceive('getLimit')->andReturn($limit)->getMock()
-            ;
+            ->shouldReceive('getCategory')
+            ->andReturn($category)
+            ->getMock()
+            ->shouldReceive('getQuery')
+            ->andReturn($query)
+            ->getMock()
+            ->shouldReceive('getOffset')
+            ->andReturn($offset)
+            ->getMock()
+            ->shouldReceive('getLimit')
+            ->andReturn($limit)
+            ->getMock();
 
         return $mock;
     }

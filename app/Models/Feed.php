@@ -31,9 +31,7 @@ class Feed extends Model
      *
      * @var array
      */
-    protected $guarded = [
-        'id',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * @var array

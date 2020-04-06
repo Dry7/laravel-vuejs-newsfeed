@@ -27,7 +27,7 @@ class FeedSeeder extends Seeder
                     'content' => $news->content,
                     'created_at' => $news->properties->published,
                     'updated_at' => $news->properties->modified,
-                ],
+                ]
             );
 
             $this->importCategories($feed, $news->categories);
@@ -45,31 +45,39 @@ class FeedSeeder extends Seeder
         collect()
             ->when(
                 $categories->primary !== null,
-                static fn (Collection $collection) => $collection->add(
-                    [$categories->primary, true],
-                    ),
+                static fn(Collection $collection) => $collection->add([
+                    $categories->primary,
+                    true,
+                ])
+            )
+            ->merge(
+                array_map(
+                    static fn(string $category) => [$category, false],
+                    $categories->additional
                 )
-            ->merge(array_map(
-                static fn (string $category) => [$category, false],
-                $categories->additional,
-            ))
-            ->map(static fn (array $item) =>
-            [Category::query()->firstOrCreate(['name' => $item[0]])->id, $item[1]],
-                )
-            ->mapWithKeys(static fn (array $item) => [
-                $item[0] => ['primary' => $item[1]]
-            ])
+            )
+            ->map(
+                static fn(array $item) => [
+                    Category::query()->firstOrCreate(['name' => $item[0]])->id,
+                    $item[1],
+                ]
+            )
+            ->mapWithKeys(
+                static fn(array $item) => [
+                    $item[0] => ['primary' => $item[1]],
+                ]
+            )
             ->pipe(
-                static fn (Collection $collection) => $feed->categories()->sync($collection)
+                static fn(Collection $collection) => $feed->categories()->sync($collection)
             );
     }
 
     private function importMedia(Feed $feed, array $data): void
     {
         foreach ($data as $media) {
-            $feed
-                ->media()
-                ->updateOrCreate(['token' => $media->media->id], [
+            $feed->media()->updateOrCreate(
+                ['token' => $media->media->id],
+                [
                     'link' => $media->media->{'@link'},
                     'source' => $media->media->source,
                     'slug' => $media->media->slug,
@@ -77,12 +85,13 @@ class FeedSeeder extends Seeder
                     'url' => $media->media->attributes->url,
                     'width' => $media->media->attributes->width,
                     'height' => $media->media->attributes->height,
-                    'copyright' => (string)$media->media->attributes->copyright,
-                    'caption' => (string)$media->media->attributes->caption,
-                    'credit' => (string)$media->media->attributes->credit,
+                    'copyright' => (string) $media->media->attributes->copyright,
+                    'caption' => (string) $media->media->attributes->caption,
+                    'credit' => (string) $media->media->attributes->credit,
                     'created_at' => $media->media->properties->published,
                     'updated_at' => $media->media->properties->modified,
-                ]);
+                ]
+            );
         }
     }
 }

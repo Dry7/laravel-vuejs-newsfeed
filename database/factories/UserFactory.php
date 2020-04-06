@@ -42,7 +42,7 @@ $factory->define(Feed::class, function (Faker $faker) {
         'title' => $faker->title,
         'slug' => $faker->slug,
         'content' => [
-            ['type' => 'html', 'content' => $faker->randomHtml(), 'attributes' => null]
+            ['type' => 'html', 'content' => $faker->randomHtml(), 'attributes' => null],
         ],
     ];
 });

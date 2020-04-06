@@ -17,8 +17,7 @@ class ApiTest extends TestCase
     {
         factory(Category::class, 20)->create();
 
-        $this
-            ->post('/api/v1/categories')
+        $this->post('/api/v1/categories')
             ->assertOk()
             ->assertJsonCount(20, 'items')
             ->assertJsonPath('total', 20);
@@ -26,8 +25,7 @@ class ApiTest extends TestCase
 
     public function testSearch(): void
     {
-        $this
-            ->postJson('/api/v1/search', [])
+        $this->postJson('/api/v1/search', [])
             ->assertOk()
             ->assertJson([
                 'items' => [],
@@ -37,10 +35,8 @@ class ApiTest extends TestCase
 
     public function testSearchWithInvalidRequest(): void
     {
-        $this
-            ->postJson('/api/v1/search', [
-                'category' => 'wrong',
-            ])
-            ->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->postJson('/api/v1/search', [
+            'category' => 'wrong',
+        ])->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

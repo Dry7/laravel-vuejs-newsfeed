@@ -36,8 +36,8 @@ class MediaView implements \JsonSerializable
                 'properties' => [
                     'published' => $this->media->created_at->toIso8601String(),
                     'modified' => $this->media->updated_at->toIso8601String(),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 }

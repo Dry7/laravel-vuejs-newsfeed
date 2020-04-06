@@ -19,7 +19,10 @@ class FeedListView implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'items' => $this->result->getItems()->map(static fn (Feed $feed) => new FeedView($feed))->toArray(),
+            'items' => $this->result
+                ->getItems()
+                ->map(static fn(Feed $feed) => new FeedView($feed))
+                ->toArray(),
             'total' => $this->result->getTotal(),
         ];
     }

@@ -26,8 +26,7 @@ class CategoriesTest extends TestCase
         $mock = $this->mock(CategoryRepository::class)
             ->shouldReceive('all')
             ->andReturn(new ItemsResult(collect($items), count($items)))
-            ->getMock()
-            ;
+            ->getMock();
 
         // act
         /** @var CategoryListView $response */
@@ -50,7 +49,8 @@ class CategoriesTest extends TestCase
                     new Category(['name' => 'test']),
                     new Category(['name' => 'test2']),
                 ],
-                'expected' => '{"items":[{"id":null,"name":"test"},{"id":null,"name":"test2"}],"total":2}',
+                'expected' =>
+                    '{"items":[{"id":null,"name":"test"},{"id":null,"name":"test2"}],"total":2}',
             ],
         ];
     }

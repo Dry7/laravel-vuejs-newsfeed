@@ -33,20 +33,25 @@ class FeedView implements \JsonSerializable
 
     private function categories(): array
     {
-        $categories = $this->feed->categories()->withPivot(['primary'])->get();
+        $categories = $this->feed
+            ->categories()
+            ->withPivot(['primary'])
+            ->get();
         $primary = $categories->where('pivot.primary', true)->first();
 
         return [
             'primary' => $primary ? $primary->name : null,
             'additional' => $categories
                 ->where('pivot.primary', false)
-                ->map(static fn (Category $category) => $category->name)
-                ->values()
+                ->map(static fn(Category $category) => $category->name)
+                ->values(),
         ];
     }
 
     private function media(): Collection
     {
-        return $this->feed->media->map(static fn (Media $media) => new MediaView($media))->values();
+        return $this->feed->media
+            ->map(static fn(Media $media) => new MediaView($media))
+            ->values();
     }
 }

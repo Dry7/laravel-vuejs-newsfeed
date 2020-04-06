@@ -31,7 +31,14 @@ class CategoryRepositoryTest extends TestCase
 
         self::assertInstanceOf(ItemsResult::class, $response);
         self::assertEquals(count($categories), $response->getTotal());
-        self::assertSame($categories, $response->getItems()->pluck('name')->sort()->toArray());
+        self::assertSame(
+            $categories,
+            $response
+                ->getItems()
+                ->pluck('name')
+                ->sort()
+                ->toArray()
+        );
     }
 
     public static function allDataProvider(): array

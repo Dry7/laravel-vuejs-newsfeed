@@ -19,7 +19,10 @@ class CategoryListView implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'items' => $this->result->getItems()->map(static fn (Category $category) => new CategoryView($category))->toArray(),
+            'items' => $this->result
+                ->getItems()
+                ->map(static fn(Category $category) => new CategoryView($category))
+                ->toArray(),
             'total' => $this->result->getTotal(),
         ];
     }

@@ -11,8 +11,10 @@ class CategoryRepository
 {
     public function all()
     {
-        $items = Category::selectRaw('categories.*, count(*) OVER () as total')->orderBy('name')->get();
+        $items = Category::selectRaw('categories.*, count(*) OVER () as total')
+            ->orderBy('name')
+            ->get();
 
-        return new ItemsResult($items, (int)($items->first()->total ?? 0));
+        return new ItemsResult($items, (int) ($items->first()->total ?? 0));
     }
 }

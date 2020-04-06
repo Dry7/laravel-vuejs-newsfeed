@@ -25,7 +25,7 @@ class SearchRequest extends FormRequest
 
     public function getCategory(): int
     {
-        return (int)$this->input('category');
+        return (int) $this->input('category');
     }
 
     public function getQuery(): ?string
@@ -35,11 +35,11 @@ class SearchRequest extends FormRequest
 
     public function getOffset(): int
     {
-        return (int)$this->input('offset');
+        return (int) $this->input('offset');
     }
 
     public function getLimit(): int
     {
-        return (int)$this->input('limit', self::DEFAULT_LIMIT);
+        return (int) $this->input('limit', self::DEFAULT_LIMIT);
     }
 }
